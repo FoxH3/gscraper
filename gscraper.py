@@ -1,10 +1,11 @@
-import re, sys, os, random
+import re, os, random
 import urllib.request
 
 """
 TODO: 
-update to bs4
-parse to JSON
+change to bs4
+Improve Pattern
+Option to parse to JSON
 """
 user_agents = [
     "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.149 Safari/537.36",
@@ -23,19 +24,22 @@ user_agents = [
     "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Safari/605.1.15",
     "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.82 Safari/537.36 OPR/75.0.3969.267",
 ]
+start = 1
+end = 75000
+timeout=0
 
 def scrapeText():
     pat3 = r'\*\*\*(?: |    )START OF (?:THE|THIS) PROJECT GUTENBERG EBOOK.{1,90}\*\*\*(.+)\*\*\*(?: |    )END OF (?:THE|THIS) PROJECT GUTENBERG EBOOK.{1,90}\*\*\*'
     pat4 = re.compile('[^a-zA-Z0-9"\s\':.;,]')
     
-    for i in range(1, 75000):
+    for i in range(start, end):
         url = f"https://www.gutenberg.org/cache/epub/{i}/pg{i}.txt"
         print(f"Scraping URL: {url}")
         try:
             useragent = random.choice(user_agents)
             headers = {'User-Agent': useragent}
             req = urllib.request.Request(url, headers=headers)
-            with urllib.request.urlopen(req) as response:
+            with urllib.request.urlopen(req, timeout=timeout) as response:
                 try:
                     text = response.read().decode('utf-8')
                 except UnicodeDecodeError:
@@ -64,7 +68,7 @@ def main():
     os.makedirs("./books", exist_ok=True)
     scrapeText()
 
-    print("----------Program completed the task successfully----------")
+    print("----------------Program completed the task successfully----------------")
 
 
 if __name__ == "__main__":
