@@ -24,8 +24,11 @@ user_agents = [
     "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Safari/605.1.15",
     "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.82 Safari/537.36 OPR/75.0.3969.267",
 ]
+# script starts at the start value 
 start = 1
+# script ends at end value
 end = 75000
+# Sets a Timeout value. in case of getting blocked by the websites e.g. antispam function
 timeout=0
 
 def scrapeText():
@@ -58,7 +61,7 @@ def scrapeText():
                         file.write(text)
                     print(f"File '{filename}' written.")
                 else:
-                    print("Pattern not found in the text.")
+                    print("Search Pattern not found in the text.")
                     continue
         except urllib.error.HTTPError as e:
             print(f"Error fetching URL: {url}. \n{e}")
